@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Priority_Queue
 {
-    
+    // class Priority Queue
     class PriorityQueue
     {
         private int max_size;   // maximum size of priority queue
@@ -17,8 +17,20 @@ namespace Priority_Queue
         {
             max_size = 5;
             counter = 0;
+            arr = new string[max_size];
         }
 
+        public bool isFull()
+        {
+            if (counter == max_size) return true;
+            return false;
+        }
+
+        public bool isEmpty()
+        {
+            if (counter == 0) return true;
+            return false;
+        }
         // method to add item into priority queue
         public void enQueue(string item, int priority)
         {
@@ -56,25 +68,24 @@ namespace Priority_Queue
             return null;
         }
         
-        public string[] getQueue()
+        // method to copy entire priority queue to a array
+        public string[] copyQueue()
         {
-            int i = 0;
+            // if queue is empty
             if (counter == 0)
             {
                 Console.WriteLine("Underflow");
                 return null;
             }
-            // else returning the item with highest priority
+            int temp = 0;
             foreach (Queue<string> q in Dict.Values)
             {
-                // we use a sorted dictionary
-                if (q.Count > 0)
-                {
-                    counter--;
-                    arr[i] = q.Dequeue();
-                    i++;
-                }
+                // copying individual queue to the array with starting index temp
+                if (q.Count>0) q.CopyTo(arr, temp);
+                // incrementing starting index for next queue
+                temp = temp + q.Count;
             }
+            // returning the array
             return arr;
         }
     }

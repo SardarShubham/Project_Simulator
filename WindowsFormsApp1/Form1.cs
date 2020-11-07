@@ -13,15 +13,31 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
+        static int time;
         static int flightNo = 1000;
         int E_level;
         bool isSimulatorON;
         PriorityQueue PQ;
+        List<Label> arrival_label_list;
+        string[] arrivalList;
+        Circular_list instruction_list;
         public Form1()
         {
             InitializeComponent();
             isSimulatorON = false;
+            // object of priority queue
             PQ = new PriorityQueue();
+            // list of labels for arrivals table
+            arrival_label_list = new List<Label>();
+            // object of circular array
+            instruction_list = new Circular_list();
+            // adding the labels into the list of labels
+            arrival_label_list.Add(arrival_row1);
+            arrival_label_list.Add(arrival_row2);
+            arrival_label_list.Add(arrival_row3);
+            arrival_label_list.Add(arrival_row4);
+            arrival_label_list.Add(arrival_row5);
+            // emergency level
             E_level = 0;
         }
 
@@ -48,10 +64,9 @@ namespace WindowsFormsApp1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            String time = time_text.Text;
-            int t1 = Int32.Parse(time);
-            t1 = t1 + 5;
-            time_text.Text = t1.ToString();
+            time = time + 5;
+            time_text.Text = time.ToString();
+            
             
             
         }
@@ -59,19 +74,56 @@ namespace WindowsFormsApp1
         private void add_arrival_button_Click(object sender, EventArgs e)
         {
             flightNo++;
-            PQ.enQueue(flightNo.ToString(), E_level);
-            string str = flightNo.ToString();
-            instruction_text.Text = str + " is added into the holding stack! ";
+            // if the holding stack/ priority queue is not full
+            if (!PQ.isFull())
+            {
+                // adding flight to the holding stack
+                PQ.enQueue(flightNo.ToString(), E_level);
+                string str2 = E_level.ToString();
+                string str = flightNo.ToString();
+                // generating instruction to be displayed
+                string str3 = "F-" + str + " is added into the holding stack! " + str2;
+                // adding the instructions into the list
+                instruction_list.add(str3);
+                
+                instruction_txt.Text = instruction_list.display();
+                updateArrivalTable();
+            }     
         }
+
 
         private void add_departure_button_Click(object sender, EventArgs e)
         {
-
+            // if runway is availabe then only
+            if (!PQ.isEmpty())
+            {
+                string str = PQ.deQueue();
+                instruction_list.add("F-" + str + " is cleared for landing! ");
+            }
         }
 
-        private void list_Emergency_levels_SelectedIndexChanged(object sender, EventArgs e)
+        private void arrival_Emergency_levels_SelectedIndexChanged(object sender, EventArgs e)
         {
-            E_level = list_Emergency_levels.SelectedIndex + 1;
+            // getting the emergency level for selected choice
+            E_level = arrival_Emergency_levels.SelectedIndex + 1;
+        }
+
+        // method to update the Arrival Time-table
+        private void updateArrivalTable()
+        {
+            // if there arrivals exists
+            if (!PQ.isEmpty())
+            { 
+            // copying the expected arrivals into a local array
+            arrivalList = PQ.copyQueue();
+            // setting the table texts
+            int i = 0;
+                foreach (string str in arrivalList)
+                {
+                    arrival_label_list[i].Text = str;
+                    i++;
+                }
+            }
         }
     }
 }

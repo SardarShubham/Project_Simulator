@@ -31,8 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.simulate_timer = new System.Windows.Forms.Timer(this.components);
             this.time_text = new System.Windows.Forms.Label();
-            this.instruction_text = new System.Windows.Forms.Label();
-            this.list_Emergency_levels = new System.Windows.Forms.ListBox();
+            this.arrival_Emergency_levels = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.Arrival_label = new System.Windows.Forms.Label();
             this.departure_row1 = new System.Windows.Forms.Label();
@@ -40,13 +39,6 @@
             this.arrival_row1 = new System.Windows.Forms.Label();
             this.departure_label = new System.Windows.Forms.Label();
             this.arrival_row2 = new System.Windows.Forms.Label();
-            this.Emergency_levels_label = new System.Windows.Forms.Label();
-            this.simulateButton = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.add_arrival_button = new System.Windows.Forms.Button();
-            this.add_departure_button = new System.Windows.Forms.Button();
-            this.instruction_label = new System.Windows.Forms.Label();
-            this.time_label = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.arrival_time_row1 = new System.Windows.Forms.Label();
@@ -81,6 +73,17 @@
             this.label37 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
+            this.Emergency_levels_label = new System.Windows.Forms.Label();
+            this.simulateButton = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.instruction_txt = new System.Windows.Forms.TextBox();
+            this.add_arrival_button = new System.Windows.Forms.Button();
+            this.add_departure_button = new System.Windows.Forms.Button();
+            this.instruction_label = new System.Windows.Forms.Label();
+            this.time_label = new System.Windows.Forms.Label();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -100,34 +103,23 @@
             this.time_text.TabIndex = 2;
             this.time_text.Text = "0";
             // 
-            // instruction_text
+            // arrival_Emergency_levels
             // 
-            this.instruction_text.AutoSize = true;
-            this.instruction_text.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.instruction_text.Location = new System.Drawing.Point(0, 76);
-            this.instruction_text.Name = "instruction_text";
-            this.instruction_text.Size = new System.Drawing.Size(28, 17);
-            this.instruction_text.TabIndex = 3;
-            this.instruction_text.Text = "----";
-            this.instruction_text.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // list_Emergency_levels
-            // 
-            this.list_Emergency_levels.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.list_Emergency_levels.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.list_Emergency_levels.FormattingEnabled = true;
-            this.list_Emergency_levels.ItemHeight = 20;
-            this.list_Emergency_levels.Items.AddRange(new object[] {
+            this.arrival_Emergency_levels.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.arrival_Emergency_levels.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.arrival_Emergency_levels.FormattingEnabled = true;
+            this.arrival_Emergency_levels.ItemHeight = 20;
+            this.arrival_Emergency_levels.Items.AddRange(new object[] {
             "Emergency Level 1 : (Critical Patient / Transplant Organ)",
             "Emergency Level 2 : (Hijacked Plane)",
             "Emergency Level 3 : (Critical Fuel, Lightning Strike)",
             "Emergency Level 4 : (No Fuel Gliding Plane, Damaged)",
             "Emergency Level 5 : (Other Greater Dynamic Spotted Emergency"});
-            this.list_Emergency_levels.Location = new System.Drawing.Point(581, 403);
-            this.list_Emergency_levels.Name = "list_Emergency_levels";
-            this.list_Emergency_levels.Size = new System.Drawing.Size(463, 164);
-            this.list_Emergency_levels.TabIndex = 1;
-            this.list_Emergency_levels.SelectedIndexChanged += new System.EventHandler(this.list_Emergency_levels_SelectedIndexChanged);
+            this.arrival_Emergency_levels.Location = new System.Drawing.Point(543, 418);
+            this.arrival_Emergency_levels.Name = "arrival_Emergency_levels";
+            this.arrival_Emergency_levels.Size = new System.Drawing.Size(463, 164);
+            this.arrival_Emergency_levels.TabIndex = 1;
+            this.arrival_Emergency_levels.SelectedIndexChanged += new System.EventHandler(this.arrival_Emergency_levels_SelectedIndexChanged);
             // 
             // tableLayoutPanel1
             // 
@@ -258,83 +250,6 @@
             this.arrival_row2.Text = "----";
             this.arrival_row2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.arrival_row2.Click += new System.EventHandler(this.label3_Click);
-            // 
-            // Emergency_levels_label
-            // 
-            this.Emergency_levels_label.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.Emergency_levels_label.AutoSize = true;
-            this.Emergency_levels_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Emergency_levels_label.Location = new System.Drawing.Point(586, 353);
-            this.Emergency_levels_label.Name = "Emergency_levels_label";
-            this.Emergency_levels_label.Size = new System.Drawing.Size(340, 32);
-            this.Emergency_levels_label.TabIndex = 3;
-            this.Emergency_levels_label.Text = "Select the Type of Aircraft";
-            // 
-            // simulateButton
-            // 
-            this.simulateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.simulateButton.BackColor = System.Drawing.SystemColors.Info;
-            this.simulateButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.simulateButton.Location = new System.Drawing.Point(733, 184);
-            this.simulateButton.Name = "simulateButton";
-            this.simulateButton.Size = new System.Drawing.Size(216, 90);
-            this.simulateButton.TabIndex = 4;
-            this.simulateButton.Text = "Simulate";
-            this.simulateButton.UseVisualStyleBackColor = false;
-            this.simulateButton.Click += new System.EventHandler(this.simulateButton_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.instruction_text);
-            this.panel1.Location = new System.Drawing.Point(12, 181);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(648, 93);
-            this.panel1.TabIndex = 5;
-            // 
-            // add_arrival_button
-            // 
-            this.add_arrival_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.add_arrival_button.Location = new System.Drawing.Point(548, 596);
-            this.add_arrival_button.Name = "add_arrival_button";
-            this.add_arrival_button.Size = new System.Drawing.Size(145, 52);
-            this.add_arrival_button.TabIndex = 6;
-            this.add_arrival_button.Text = "Add Arrival";
-            this.add_arrival_button.UseVisualStyleBackColor = true;
-            this.add_arrival_button.Click += new System.EventHandler(this.add_arrival_button_Click);
-            // 
-            // add_departure_button
-            // 
-            this.add_departure_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.add_departure_button.Location = new System.Drawing.Point(799, 596);
-            this.add_departure_button.Name = "add_departure_button";
-            this.add_departure_button.Size = new System.Drawing.Size(127, 52);
-            this.add_departure_button.TabIndex = 7;
-            this.add_departure_button.Text = "Add Departure";
-            this.add_departure_button.UseVisualStyleBackColor = true;
-            this.add_departure_button.Click += new System.EventHandler(this.add_departure_button_Click);
-            // 
-            // instruction_label
-            // 
-            this.instruction_label.AutoSize = true;
-            this.instruction_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.instruction_label.Location = new System.Drawing.Point(6, 142);
-            this.instruction_label.Name = "instruction_label";
-            this.instruction_label.Size = new System.Drawing.Size(423, 32);
-            this.instruction_label.TabIndex = 8;
-            this.instruction_label.Text = "Instruction Conveyed to the Pilot";
-            // 
-            // time_label
-            // 
-            this.time_label.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.time_label.AutoSize = true;
-            this.time_label.Font = new System.Drawing.Font("Wide Latin", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.time_label.Location = new System.Drawing.Point(154, 25);
-            this.time_label.Name = "time_label";
-            this.time_label.Size = new System.Drawing.Size(299, 74);
-            this.time_label.TabIndex = 9;
-            this.time_label.Text = "Time";
             // 
             // label1
             // 
@@ -676,12 +591,138 @@
             this.label39.TabIndex = 39;
             this.label39.Text = "label39";
             // 
+            // Emergency_levels_label
+            // 
+            this.Emergency_levels_label.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.Emergency_levels_label.AutoSize = true;
+            this.Emergency_levels_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Emergency_levels_label.Location = new System.Drawing.Point(846, 308);
+            this.Emergency_levels_label.Name = "Emergency_levels_label";
+            this.Emergency_levels_label.Size = new System.Drawing.Size(340, 32);
+            this.Emergency_levels_label.TabIndex = 3;
+            this.Emergency_levels_label.Text = "Select the Type of Aircraft";
+            // 
+            // simulateButton
+            // 
+            this.simulateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.simulateButton.BackColor = System.Drawing.SystemColors.Info;
+            this.simulateButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.simulateButton.Location = new System.Drawing.Point(1074, 184);
+            this.simulateButton.Name = "simulateButton";
+            this.simulateButton.Size = new System.Drawing.Size(216, 90);
+            this.simulateButton.TabIndex = 4;
+            this.simulateButton.Text = "Simulate";
+            this.simulateButton.UseVisualStyleBackColor = false;
+            this.simulateButton.Click += new System.EventHandler(this.simulateButton_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.instruction_txt);
+            this.panel1.Location = new System.Drawing.Point(12, 181);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(648, 93);
+            this.panel1.TabIndex = 5;
+            // 
+            // instruction_txt
+            // 
+            this.instruction_txt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.instruction_txt.Location = new System.Drawing.Point(0, 0);
+            this.instruction_txt.Multiline = true;
+            this.instruction_txt.Name = "instruction_txt";
+            this.instruction_txt.ReadOnly = true;
+            this.instruction_txt.Size = new System.Drawing.Size(648, 93);
+            this.instruction_txt.TabIndex = 4;
+            // 
+            // add_arrival_button
+            // 
+            this.add_arrival_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.add_arrival_button.Location = new System.Drawing.Point(679, 637);
+            this.add_arrival_button.Name = "add_arrival_button";
+            this.add_arrival_button.Size = new System.Drawing.Size(145, 52);
+            this.add_arrival_button.TabIndex = 6;
+            this.add_arrival_button.Text = "Add Arrival";
+            this.add_arrival_button.UseVisualStyleBackColor = true;
+            this.add_arrival_button.Click += new System.EventHandler(this.add_arrival_button_Click);
+            // 
+            // add_departure_button
+            // 
+            this.add_departure_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.add_departure_button.Location = new System.Drawing.Point(1173, 637);
+            this.add_departure_button.Name = "add_departure_button";
+            this.add_departure_button.Size = new System.Drawing.Size(127, 52);
+            this.add_departure_button.TabIndex = 7;
+            this.add_departure_button.Text = "Add Departure";
+            this.add_departure_button.UseVisualStyleBackColor = true;
+            this.add_departure_button.Click += new System.EventHandler(this.add_departure_button_Click);
+            // 
+            // instruction_label
+            // 
+            this.instruction_label.AutoSize = true;
+            this.instruction_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.instruction_label.Location = new System.Drawing.Point(6, 142);
+            this.instruction_label.Name = "instruction_label";
+            this.instruction_label.Size = new System.Drawing.Size(423, 32);
+            this.instruction_label.TabIndex = 8;
+            this.instruction_label.Text = "Instruction Conveyed to the Pilot";
+            // 
+            // time_label
+            // 
+            this.time_label.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.time_label.AutoSize = true;
+            this.time_label.Font = new System.Drawing.Font("Wide Latin", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.time_label.Location = new System.Drawing.Point(154, 25);
+            this.time_label.Name = "time_label";
+            this.time_label.Size = new System.Drawing.Size(299, 74);
+            this.time_label.TabIndex = 9;
+            this.time_label.Text = "Time";
+            // 
+            // listBox1
+            // 
+            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 25;
+            this.listBox1.Items.AddRange(new object[] {
+            "Emergency (V.I.P meetings) (Lvl. 1)",
+            "Normal (Lvl. 2)"});
+            this.listBox1.Location = new System.Drawing.Point(1043, 430);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(342, 154);
+            this.listBox1.TabIndex = 10;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(725, 383);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(96, 32);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Arrival";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(1159, 383);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(141, 32);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Departure";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.ClientSize = new System.Drawing.Size(1056, 757);
+            this.ClientSize = new System.Drawing.Size(1397, 757);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.time_label);
             this.Controls.Add(this.instruction_label);
             this.Controls.Add(this.add_departure_button);
@@ -690,7 +731,7 @@
             this.Controls.Add(this.simulateButton);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.Emergency_levels_label);
-            this.Controls.Add(this.list_Emergency_levels);
+            this.Controls.Add(this.arrival_Emergency_levels);
             this.Controls.Add(this.time_text);
             this.Name = "Form1";
             this.Text = "Air Flight Control Simulator";
@@ -706,8 +747,7 @@
         #endregion
         private System.Windows.Forms.Timer simulate_timer;
         private System.Windows.Forms.Label time_text;
-        private System.Windows.Forms.Label instruction_text;
-        private System.Windows.Forms.ListBox list_Emergency_levels;
+        private System.Windows.Forms.ListBox arrival_Emergency_levels;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label Arrival_label;
         private System.Windows.Forms.Label departure_row1;
@@ -756,6 +796,10 @@
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.TextBox instruction_txt;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
 
