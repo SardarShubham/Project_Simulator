@@ -17,6 +17,14 @@ namespace WindowsFormsApp1
         static int flightNo = 1000;
         int E_level;
         bool isSimulatorON;
+        const int landing_time = 100 ; // 100 sec
+        const int takeOff_time = 120; // 2 min
+        const int holding_to_approach_time = 30; // 30 sec
+        const int fuel_capacity = 1800; // 1800 litres
+        const int fuelConsume_Rate = 4; // 4 lit/sec
+        int time_counter;
+        bool isRunwayAvailable;
+        string temp;
         PriorityQueue PQ;
         List<Label> arrival_label_list;
         string[] arrivalList;
@@ -25,6 +33,9 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
             isSimulatorON = false;
+            time_counter = 0;
+            isRunwayAvailable = true;
+            temp = null;
             // object of priority queue
             PQ = new PriorityQueue();
             // list of labels for arrivals table
@@ -66,6 +77,26 @@ namespace WindowsFormsApp1
         {
             time = time + 5;
             time_text.Text = time.ToString();
+            instruction_txt.Text = instruction_list.display();
+            updateArrivalTable();
+            /* if runway availability , add landing
+            //if (isRunwayAvailable)
+            {
+                string temp = PQ.deQueue();
+                instruction_list.add(temp + "is moving to the final approach");
+             
+                instruction_list.add(temp + " is landing!");
+                isRunwayAvailable = false;
+                
+            }
+            else time_counter = time_counter + time;
+           
+            if (time_counter > landing_time)
+            {
+                instruction_list.add(temp + " has been landed");
+                time_counter = 0;
+                isRunwayAvailable = true;
+            } */
             
             
             
@@ -82,12 +113,9 @@ namespace WindowsFormsApp1
                 string str2 = E_level.ToString();
                 string str = flightNo.ToString();
                 // generating instruction to be displayed
-                string str3 = "F-" + str + " is added into the holding stack! " + str2;
+                string str3 = "F-" + str + " is added into the holding pattern! " + str2;
                 // adding the instructions into the list
                 instruction_list.add(str3);
-                
-                instruction_txt.Text = instruction_list.display();
-                updateArrivalTable();
             }     
         }
 

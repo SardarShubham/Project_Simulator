@@ -90,7 +90,7 @@
             // 
             // simulate_timer
             // 
-            this.simulate_timer.Interval = 1000;
+            this.simulate_timer.Interval = 500;
             this.simulate_timer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // time_text
