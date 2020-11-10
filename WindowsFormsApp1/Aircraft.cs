@@ -11,9 +11,10 @@ namespace WindowsFormsApp1
         static int flightNo = 1000;
         public string flight_name;
         public int E_level;
+        public string flt_type;
         public bool EmergencyChanged;
         const int fuel_capacity = 1000; // 1000 litres
-        int fuel_available;
+        public int fuel_available;
         const int fuelConsume_Rate = 4; // 4 lit/sec
         Random R = new Random();
 
@@ -22,8 +23,16 @@ namespace WindowsFormsApp1
             flightNo++;
             flight_name = "F-" + flightNo.ToString();
             E_level = level;
-            if (level == 2) EmergencyChanged = false;   // if normal
-            else EmergencyChanged = true;
+            if (level == 2)
+            {
+                EmergencyChanged = false;   // if normal
+                flt_type = "Normal";
+            }
+            else
+            {
+                EmergencyChanged = true;
+                flt_type = "Emergency";
+            }
             fuel_available = R.Next(70, 800);
         }
 

@@ -20,7 +20,7 @@ namespace WindowsFormsApp1
         const int holding_pattern_lim = 6;
         int nxtLanding_phase;
         int apprTime_start, landTime_start, curr_time;
-        int first_flt_time;
+        int timeForTable;
         bool isLanding;
         const int landing_time = 10 ; // 10 sec
         const int fileTo_finApproach = 8; // 8 sec        
@@ -31,6 +31,8 @@ namespace WindowsFormsApp1
         PriorityQueue PQ;
         List<Label> arrival_label_list;
         List<Label> arr_time_list;
+        List<Label> fuel_table;
+        List<Label> flt_type_table;
         Aircraft[] arrivalList;
         Circular_list<string> instruction_list;
         Circular_list<Aircraft> arrived_flights;
@@ -54,12 +56,16 @@ namespace WindowsFormsApp1
             // object of circular array
             instruction_list = new Circular_list<string>(6);
             inst_list = new string[6];
-            arrived_flights = new Circular_list<Aircraft>(2);
+            arrived_flights = new Circular_list<Aircraft>(9);
             // adding the labels into the list of labels
             arrival_label_list = new List<Label>() { arrival_row1, arrival_row2, arrival_row3, arrival_row4, 
                 arrival_row5, arrival_row6, arrival_row7, arrival_row8, arrival_row9 };
             arr_time_list = new List<Label>() { arr_time_row1, arr_time_row2, arr_time_row3, arr_time_row4,
                 arr_time_row5, arr_time_row6, arr_time_row7, arr_time_row8, arr_time_row9 };
+            flt_type_table = new List<Label>() { type_r1, type_r2, type_r3, 
+                type_r4, type_r5, type_r6, type_r7, type_r8, type_r9 };
+            fuel_table = new List<Label>() { fuel_r1, fuel_r2, fuel_r3, fuel_r4,
+                fuel_r5, fuel_r6, fuel_r7, fuel_r8, fuel_r9 };
         }
 
         private void simulateButton_Click(object sender, EventArgs e)
@@ -97,6 +103,7 @@ namespace WindowsFormsApp1
                         instruction_list.add(">> " + landFlt.flight_name + " is cleared for landing ,move to the final approach");
                         apprTime_start = time;
                         nxtLanding_phase = 2;
+                        timeForTable = curr_time;
                     }
                     break;
                 case 2: // at final approach point
@@ -126,9 +133,15 @@ namespace WindowsFormsApp1
                         nxtLanding_phase = 1;
                     }
                     break;
-            }                           
+            }
+            arrivalList = PQ.copyQueue();
+            for (int i=0; i<PQ.getCount(); i++)
+            {
+                arrivalList[i].updataFuel();
+            }
             instruction_txt.Text = display_instruction();
             updateArrivalTable();
+            
         }
 
         private string display_instruction()
@@ -149,7 +162,6 @@ namespace WindowsFormsApp1
             // object of Aircraft class
             arrFlt = new Aircraft(flightType);
             // if the holding stack/ priority queue is not full
-            if (PQ.isEmpty()) first_flt_time = curr_time;
             if (!PQ.isFull())
             {
                 // adding flight to the holding stack
@@ -157,18 +169,19 @@ namespace WindowsFormsApp1
                 // generating instruction to be displayed
                 if (flightType == 1)
                 {
-                    instruct_temp = "Emergency Aircraft " + arrFlt.flight_name + ", move to the front of file approach! ";
+                    instruct_temp = ">> Emergency Aircraft " + arrFlt.flight_name + ", move to the front of file approach! ";
                 }
                 else
                 {                   
-                    instruct_temp = arrFlt.flight_name + ", move to the holding pattern.";
+                    instruct_temp = ">> " + arrFlt.flight_name + ", move to the holding pattern.";
                 }
                 // adding the instructions into the list
             }
             else
             {
-                instruct_temp = "Holding pattern is becoming overcrowded! " + arrFlt.flight_name + " , redirect to another airport!";
+                instruct_temp = ">> Holding pattern is becoming overcrowded! " + arrFlt.flight_name + " , redirect to another airport!";
             }
+            timeForTable = curr_time;
             instruction_list.add(instruct_temp);
         }
        
@@ -182,41 +195,52 @@ namespace WindowsFormsApp1
         // method to update the Arrival Time-table
         private void updateArrivalTable()
         {
-            int l1, l2, i;
+            int l1, l2, i, j, temp1;
             // for arrived flights
-            l1 = 0;
             l1 = arrived_flights.getCount();
+            l2 = PQ.getCount();
+            int temp = 9 - l2;  // place available for arrived
             Aircraft[] list = arrived_flights.CopyTo();
-            for (i = 0; i < l1; i++)
+           // if (isLanding) // temp-1, if l1<temp print all-1,   print temp-1 only
+
+            if (isLanding) temp = temp - 1; // place decreaded by 1;
+            if (temp > l1) temp1 = l1;
+            else temp1 = temp;
+            for (i=0; i<temp1; i++) 
             {
-                arrival_label_list[i].Text = list[i].flight_name;
+                arrival_label_list[i].Text = list[i].flight_name;              
                 arr_time_list[i].Text = "Arrived";
-            }
+                flt_type_table[i].Text = list[i].flt_type;
+                fuel_table[i].Text = list[i].fuel_available.ToString();
+            }           
             if (isLanding)
             {
-                arrival_label_list[l1].Text = landFlt.flight_name;
-                arr_time_list[l1].Text = "Landing";
-                l1++;
+                arrival_label_list[i].Text = landFlt.flight_name;
+                arr_time_list[i].Text = "Landing";
+                flt_type_table[i].Text = landFlt.flt_type;
+                fuel_table[i].Text = landFlt.fuel_available.ToString();
+                i++;
             }
             // if there arrivals exists
             if (!PQ.isEmpty())
             { 
                 // copying the expected arrivals into a local array
                 arrivalList = PQ.copyQueue();
-                int temp = first_flt_time;
                 // setting the table texts
-                l2 = PQ.getCount();
-                for (i = 0; i<l2; i++)
+                for (j = 0; j<l2; j++)
                 {
-                    arrival_label_list[l1+i].Text = arrivalList[i].flight_name;
-                    arr_time_list[l1+i].Text = ((i+1)*18).ToString() + " sec";
-                    
+                    arrival_label_list[i].Text = arrivalList[j].flight_name;
+                    arr_time_list[i].Text = (timeForTable + (j+1)*18).ToString() + " sec";
+                    flt_type_table[i].Text = arrivalList[j].flt_type;
+                    fuel_table[i].Text = arrivalList[j].fuel_available.ToString();
+                    i++;
                 }
-                first_flt_time = temp;
                 while (i < 9)
                 {
-                    arrival_label_list[i].Text = "";
-                    arr_time_list[i].Text = "";
+                    arrival_label_list[i].Text = "----";
+                    arr_time_list[i].Text = "----";
+                    flt_type_table[i].Text = "----";
+                    fuel_table[i].Text = "----";
                     i++;
                 }
             }
