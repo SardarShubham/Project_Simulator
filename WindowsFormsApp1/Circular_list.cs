@@ -9,51 +9,59 @@ using System.Threading.Tasks;
 namespace WindowsFormsApp1
 {
     // class Circular list
-    class Circular_list
+    class Circular_list<T>
     {
-        int size;
+        int n;
         int front_pointer, rear_pointer;
-        string[] list;
-        private string display_result;
-        public Circular_list()
+        T [] list;
+        T [] copyList;
+        int count;
+        public Circular_list(int size)
         {
-            size = 3;   // maximum size of circular array
-            list = new string[size];    // array
+            n = size; // maximum size of circular array
+            list = new T [size];    // array
             front_pointer = rear_pointer = -1;  // front and rear pointers
-            display_result = "";    // final string after traversal
+            copyList = new T [size];    // final string after traversal
+            count = 0;
         }
 
+        public int getCount()
+        {
+            return count;
+        }
         // method to add new item into the cirular array
-        public void add(string item)
+        public void add(T item)
         {
             // if the array is full
-            if (front_pointer == (rear_pointer + 1) % size)
+            if (front_pointer == (rear_pointer + 1) % n)
             {
-                front_pointer = (front_pointer + 1) % size;
+                front_pointer = (front_pointer + 1) % n;
             }
             // incrementing rear pointer and adding item at that index
-            rear_pointer = (rear_pointer + 1) % size;
+            rear_pointer = (rear_pointer + 1) % n;
             list[rear_pointer] = item;
             // setting proper index 
             if (front_pointer == -1) front_pointer = 0;
+            if (count < n) count++;
         }
 
         // method to get concanated string after traversal
-        public string display()
+        public T[] CopyTo()
         {
-            display_result = "";
+            int i = 0;
             int temp = front_pointer;
             // if array is empty
             if (front_pointer == -1) return null;
             // concanating string starting from front to rear index in circular pattern
             while (true)
             {
-                display_result = display_result + list[temp] + "\r\n";
+                copyList[i] = list[temp];
                 if (temp == rear_pointer) break;
-                temp = (temp + 1) % size;
+                temp = (temp + 1) % n;
+                i++;
             }
             // returning the string
-            return display_result;
+            return copyList;
         }
     }
 

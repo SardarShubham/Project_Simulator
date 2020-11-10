@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WindowsFormsApp1;
 
 namespace Priority_Queue
 {
@@ -10,14 +11,16 @@ namespace Priority_Queue
     {
         private int max_size;   // maximum size of priority queue
         private int counter;    // to count no of elements in queue
-        SortedDictionary<int, Queue<string>> Dict = new SortedDictionary<int, Queue<string>>();
-        string[] arr;
+        SortedDictionary<int, Queue<Aircraft>> Dict = new SortedDictionary<int, Queue<Aircraft>>();
+        Aircraft[] arr;
+        int priority;
         // constructor to initialize size and counter
-        public PriorityQueue()   
+        public PriorityQueue(int size)   
         {
-            max_size = 5;
+            max_size = size;
             counter = 0;
-            arr = new string[max_size];
+            arr = new Aircraft[max_size];
+            priority = 0;
         }
 
         public bool isFull()
@@ -31,9 +34,15 @@ namespace Priority_Queue
             if (counter == 0) return true;
             return false;
         }
-        // method to add item into priority queue
-        public void enQueue(string item, int priority)
+
+        public int getCount()
         {
+            return counter;
+        }
+        // method to add item into priority queue
+        public void enQueue(Aircraft flight)
+        {
+            priority = flight.E_level;
             // if priority queue is full
             if (counter == max_size)
             {
@@ -41,13 +50,13 @@ namespace Priority_Queue
                 return;
             }
             // else adding the element with its priority
-            if (!Dict.ContainsKey(priority)) Dict.Add(priority, new Queue<string>());
-            Dict[priority].Enqueue(item);
+            if (!Dict.ContainsKey(priority)) Dict.Add(priority, new Queue<Aircraft>());
+            Dict[priority].Enqueue(flight);
             counter++;
         }
 
         // method to pop element with highest priority
-        public string deQueue()
+        public Aircraft deQueue()
         {
             // if queue is Empty
             if (counter == 0)
@@ -56,7 +65,7 @@ namespace Priority_Queue
                 return null;
             }
             // else returning the item with highest priority
-            foreach (Queue<string> q in Dict.Values)
+            foreach (Queue<Aircraft> q in Dict.Values)
             {
                 // we use a sorted dictionary
                 if (q.Count > 0)
@@ -69,7 +78,7 @@ namespace Priority_Queue
         }
         
         // method to copy entire priority queue to a array
-        public string[] copyQueue()
+        public Aircraft[] copyQueue()
         {
             // if queue is empty
             if (counter == 0)
@@ -78,7 +87,7 @@ namespace Priority_Queue
                 return null;
             }
             int temp = 0;
-            foreach (Queue<string> q in Dict.Values)
+            foreach (Queue<Aircraft> q in Dict.Values)
             {
                 // copying individual queue to the array with starting index temp
                 if (q.Count>0) q.CopyTo(arr, temp);
