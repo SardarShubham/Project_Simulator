@@ -139,6 +139,7 @@ namespace WindowsFormsApp1
                 {
                     holding.changePriority(arrivalList[i]);
                     arrivalList[i].EmergencyChanged = true;
+                    instruction_list.add(">> Low Fuel! " + arrivalList[i].flight_name + "move to the front!");
                 }
             }
             // displaying instructions and updating Arrival Table
