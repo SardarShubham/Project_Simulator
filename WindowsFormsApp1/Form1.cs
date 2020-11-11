@@ -14,25 +14,20 @@ namespace WindowsFormsApp1
     public partial class Form1 : Form
     {
         static int time;
-        bool isSimulatorON;
+        bool isSimulatorON, isLanding, isRunwayAvailable;
         string instruct_temp;
         int flightType;
         const int holding_pattern_lim = 6;
         int nxtLanding_phase;
         int apprTime_start, landTime_start, curr_time;
-        int timeForTable;
-        bool isLanding;
+        int timeForTable;       
         const int landing_time = 10 ; // 10 sec
         const int fileTo_finApproach = 8; // 8 sec        
         //int time_counter;
-        bool isRunwayAvailable;
-        Aircraft arrFlt;
-        Aircraft landFlt;
-        PriorityQueue PQ;
-        List<Label> arrival_label_list;
-        List<Label> arr_time_list;
-        List<Label> fuel_table;
-        List<Label> flt_type_table;
+        Aircraft arrFlt, landFlt;
+       // PriorityQueue PQ;
+        Priority_queue holding;
+        List<Label> arrival_label_list, arr_time_list, fuel_table, flt_type_table;
         Aircraft[] arrivalList;
         Circular_list<string> instruction_list;
         Circular_list<Aircraft> arrived_flights;
@@ -49,8 +44,8 @@ namespace WindowsFormsApp1
             arrivalList = new Aircraft[7];
             nxtLanding_phase = 1;
             isLanding = false;
-            // object of priority queue
-            PQ = new PriorityQueue(holding_pattern_lim);           
+            // object of priority queue 
+            holding = new Priority_queue(holding_pattern_lim);
             // list of labels for arrivals table
             arrival_label_list = new List<Label>();
             // object of circular array
@@ -70,6 +65,7 @@ namespace WindowsFormsApp1
 
         private void simulateButton_Click(object sender, EventArgs e)
         {
+            // if sumulator is off 
             if (isSimulatorON == false)
             {
                 simulateButton.BackColor = System.Drawing.Color.Red;
@@ -77,6 +73,7 @@ namespace WindowsFormsApp1
                 simulate_timer.Start();
                 isSimulatorON = true;
             }
+            // if simulator is on
             else
             {
                 simulateButton.BackColor = System.Drawing.Color.LawnGreen;
@@ -92,13 +89,12 @@ namespace WindowsFormsApp1
             time_text.Text = time.ToString();
             curr_time = time;
             // 1.at front of file, 2. at final approach, 3. on ground
-            //if runway availability , add landing
             switch (nxtLanding_phase)
             {
                 case 1: // at front of file
-                    if (!PQ.isEmpty())
+                    if (!holding.isEmpty())
                     {
-                        landFlt = PQ.deQueue();
+                        landFlt = holding.deQueue();
                         isLanding = true;
                         instruction_list.add(">> " + landFlt.flight_name + " is cleared for landing ,move to the final approach");
                         apprTime_start = time;
@@ -134,11 +130,18 @@ namespace WindowsFormsApp1
                     }
                     break;
             }
-            arrivalList = PQ.copyQueue();
-            for (int i=0; i<PQ.getCount(); i++)
+            // for fuel updation on each time tick
+            arrivalList = holding.copyQueue();
+            for (int i=0; i<holding.getCount(); i++)
             {
                 arrivalList[i].updataFuel();
+                if (arrivalList[i].fuel_available < 120 && arrivalList[i].EmergencyChanged == false)
+                {
+                    holding.changePriority(arrivalList[i]);
+                    arrivalList[i].EmergencyChanged = true;
+                }
             }
+            // displaying instructions and updating Arrival Table
             instruction_txt.Text = display_instruction();
             updateArrivalTable();
             
@@ -148,6 +151,7 @@ namespace WindowsFormsApp1
         {
             int length = instruction_list.getCount();
             string temp = "";
+            // copying the instruction and adding it together
             inst_list = instruction_list.CopyTo();
             for (int i= 0; i<length; i++)
             {
@@ -162,10 +166,10 @@ namespace WindowsFormsApp1
             // object of Aircraft class
             arrFlt = new Aircraft(flightType);
             // if the holding stack/ priority queue is not full
-            if (!PQ.isFull())
+            if (!holding.isFull())
             {
                 // adding flight to the holding stack
-                PQ.enQueue(arrFlt);
+                holding.enQueue(arrFlt);
                 // generating instruction to be displayed
                 if (flightType == 1)
                 {
@@ -174,14 +178,14 @@ namespace WindowsFormsApp1
                 else
                 {                   
                     instruct_temp = ">> " + arrFlt.flight_name + ", move to the holding pattern.";
-                }
-                // adding the instructions into the list
+                }               
             }
             else
             {
                 instruct_temp = ">> Holding pattern is becoming overcrowded! " + arrFlt.flight_name + " , redirect to another airport!";
             }
             timeForTable = curr_time;
+            // adding the instructions into the list
             instruction_list.add(instruct_temp);
         }
        
@@ -198,21 +202,22 @@ namespace WindowsFormsApp1
             int l1, l2, i, j, temp1;
             // for arrived flights
             l1 = arrived_flights.getCount();
-            l2 = PQ.getCount();
-            int temp = 9 - l2;  // place available for arrived
+            // current holding pattern flights
+            l2 = holding.getCount();
+            int temp = 9 - l2;  // rows available for arrived
             Aircraft[] list = arrived_flights.CopyTo();
-           // if (isLanding) // temp-1, if l1<temp print all-1,   print temp-1 only
-
-            if (isLanding) temp = temp - 1; // place decreaded by 1;
-            if (temp > l1) temp1 = l1;
+            if (isLanding) temp = temp - 1; // rows decreaded by 1;
+            if (temp > l1) temp1 = l1;  // if arrived flights are less than available table rows
             else temp1 = temp;
+            // adding arrived flights information
             for (i=0; i<temp1; i++) 
             {
                 arrival_label_list[i].Text = list[i].flight_name;              
                 arr_time_list[i].Text = "Arrived";
                 flt_type_table[i].Text = list[i].flt_type;
                 fuel_table[i].Text = list[i].fuel_available.ToString();
-            }           
+            }      
+            // if Landing is occuring, adding it's information
             if (isLanding)
             {
                 arrival_label_list[i].Text = landFlt.flight_name;
@@ -222,10 +227,10 @@ namespace WindowsFormsApp1
                 i++;
             }
             // if there arrivals exists
-            if (!PQ.isEmpty())
+            if (!holding.isEmpty())
             { 
                 // copying the expected arrivals into a local array
-                arrivalList = PQ.copyQueue();
+                arrivalList = holding.copyQueue();
                 // setting the table texts
                 for (j = 0; j<l2; j++)
                 {
@@ -235,6 +240,7 @@ namespace WindowsFormsApp1
                     fuel_table[i].Text = arrivalList[j].fuel_available.ToString();
                     i++;
                 }
+                // the empty rows are set to null
                 while (i < 9)
                 {
                     arrival_label_list[i].Text = "----";
